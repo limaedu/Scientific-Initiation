@@ -1,9 +1,4 @@
-# -*- coding: utf-8 -*-
-"""
-Spyder Editor
 
-Este √© um arquivo de script tempor√°rio.
-"""
 import numpy as np
 import random
 from math import radians,cos,sin,asin,sqrt
@@ -35,7 +30,7 @@ def GerarCromossomo(ListaDeCidades):
     return rota                                              #com o tamanho da lista de cidades
 
 
-def GerarPopInicial(tamanhoPop,ListaDeCidades): #Gera uma pop inicial de rotas(indiv√≠duos) 
+def GerarPopInicial(tamanhoPop,ListaDeCidades): #Gera uma pop inicial de rotas(indivÌduos) 
     ListaPop = []
     for i in range(tamanhoPop):
         ListaPop.append(GerarCromossomo(ListaDeCidades)) 
@@ -60,7 +55,7 @@ def haversine(lon1, lat1, lon2, lat2):
     r = 6371 # Radius of earth in kilometers. Use 3956 for miles
     return c * r    
     
-def DistanciaRota(rota): #Calcula a dist√¢ncia entre cada cidade usando a f√≥rmula de Harversine, voltando √† origem
+def DistanciaRota(rota): #Calcula a dist‚ncia entre cada cidade usando a fÛrmula de Harversine, voltando ‡ origem
         sumDistancia = 0
         for i in range(len(rota)):
             if (i+1) < len(rota):
@@ -137,16 +132,48 @@ def Selecao(populacao):
     
 
     return selecionados
-    
 
 
-# MUDEI AQUI √ì
+def CrossoverOrdenado(parent1,parent2):
     
+    filho = np.zeros((1,6), dtype=np.float64)
     
+
+    while True:
+        gene1 = int(random.random()*len(parent1))
+        gene2 = int(random.random()*len(parent1))
+        if gene1 != gene2:
+            break
+
+    inicio = min(gene1,gene2)
+    fim = max(gene1,gene2)
+
+    print (inicio,fim)
+
+    for i in range(inicio,fim):
+      print (i)
+      filho[0][i] = parent1[i]
+
+
+    for i in range(fim,len(parent2)):
+      print (str(i) + "oi")
+      if parent2[i] not in filho:
+        filho[0][i] = parent2[i]
+
+
+    for i in range(len(parent2)):
+      for j in range(len(parent2)):
+        if filho[0][i] == 0 and filho[0][i] not in parent2:
+          if parent2[j] not in filho:
+            filho[0][i] = parent2[j]
+            
+
+    return (filho)
+
+
+
     
-    
-    
-    
+        
 
 C1 = Cidade("RJ",-22.908892,-43.177138)
 C2 = Cidade("SP",-23.550483,-46.633106)
@@ -167,3 +194,4 @@ P1 = (GerarPopInicial(tamanhoPop,Lista))
 #print (FitnessPercent(P1))
 print (Roleta(P1))
 print (Selecao(P1))
+
