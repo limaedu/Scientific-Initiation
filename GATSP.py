@@ -55,7 +55,7 @@ def haversine(lon1, lat1, lon2, lat2):
     r = 6371 # Radius of earth in kilometers. Use 3956 for miles
     return c * r    
     
-def DistanciaRota(rota): #Calcula a distância entre cada cidade usando a fórmula de Harversine, voltando à origem
+def DistanciaRota(rota): #Calcula a distância entre cada cidade usando a fórmula de Harversine
         sumDistancia = 0
         for i in range(len(rota)):
             if (i+1) < len(rota):
@@ -68,7 +68,7 @@ def DistanciaRota(rota): #Calcula a distância entre cada cidade usando a fórmula
             elif (i+1) ==len(rota):
                 
                 Saida = rota[i]
-                Chegada = rota[0]
+                Chegada = rota[0]  #Caso esteja na última cidade, retorna à origem
                 distancia = haversine(Saida.long,Saida.lat,Chegada.long,Chegada.lat)
                 sumDistancia += distancia
         
@@ -87,14 +87,15 @@ def FitnessPercent(populacao):
     fitnessTotal = 0
     fitnessRank = {}
     for i in range(len(populacao)):
-        fitnessTotal += round(Fitness(populacao[i]),5)
+        fitnessTotal += round(Fitness(populacao[i]),5) #Fitness da população 
     
     
     
     for j in range(len(populacao)):
         fitnessRank["Rota "+str(j+1)] =   round( 100 * (Fitness(populacao[j]) / fitnessTotal),5)
 
-    return sorted(fitnessRank.items(), key = lambda x:x[1]) #Lista ordenada com a fitness percentual em ordem crescente
+    return sorted(fitnessRank.items(), key = lambda x:x[1]) #Lista ordenada 
+                                                            #com a fitness em ordem crescente
 
 
 
@@ -105,7 +106,7 @@ def Roleta(populacao):
     valoresfitness = []
     ranked = FitnessPercent(populacao)
     for j in range(len(ranked)):
-        valoresfitness.append(ranked[j][1])
+        valoresfitness.append(ranked[j][1]) 
     print (valoresfitness)    
     for i in range(len(ranked)):
         if i == 0:
@@ -115,7 +116,7 @@ def Roleta(populacao):
             intervalo[ranked[i][0]] = (soma, soma +ranked[i][1])
             soma += ranked[i][1]
             
-    return intervalo
+    return intervalo #Dicionário do tipo {'Roleta x': (intervalo fitness) }
     
 
 
@@ -131,44 +132,54 @@ def Selecao(populacao):
                 selecionados.append(i)
     
 
-    return selecionados
+    return selecionados   
 
 
 def CrossoverOrdenado(parent1,parent2):
     
-    filho = np.zeros((1,6), dtype=np.float64)
+    filho1 = np.zeros((1,6), dtype=np.float64)
+    filho2 = np.zeros((1,6), dtype = np.float64)
     
-
+    parent1 = [1,2,3,4,5,6]
+    parent2 = [7,6,1,2,3,4]
+    
     while True:
-        gene1 = int(random.random()*len(parent1))
-        gene2 = int(random.random()*len(parent1))
-        if gene1 != gene2:
-            break
-
+      gene1 = int(random.random()*len(parent1))
+      gene2 = int(random.random()*len(parent1))
+      if gene1 != gene2:
+        break
+    
     inicio = min(gene1,gene2)
     fim = max(gene1,gene2)
-
+    
     print (inicio,fim)
-
+    
     for i in range(inicio,fim):
       print (i)
-      filho[0][i] = parent1[i]
-
-
-    for i in range(fim,len(parent2)):
-      print (str(i) + "oi")
-      if parent2[i] not in filho:
-        filho[0][i] = parent2[i]
-
-
+      filho1[0][i] = parent1[i]
+    
+    
+    
+    for i in range(-(len(parent2)-fim),fim):
+      print (i)
+      for j in range(-(len(parent2)-fim),fim):
+        if filho1[0][i] == 0 and parent2[i] not in filho1:
+          if filho1[0][j] == 0:
+            filho1[0][j] = parent2[i]
+    
+    
+    
+    print (filho1)
+    
     for i in range(len(parent2)):
       for j in range(len(parent2)):
-        if filho[0][i] == 0 and filho[0][i] not in parent2:
-          if parent2[j] not in filho:
-            filho[0][i] = parent2[j]
+        if filho1[0][i] == 0 and filho1[0][i] not in parent2:
+          if parent2[j] not in filho1:
+            filho1[0][i] = parent2[j]
             
+    
+    print (filho1)
 
-    return (filho)
 
 
 
