@@ -140,7 +140,7 @@ def Selecao(populacao):
     
 
 
-
+# MUDEI AQUI Ó
     
     
     
