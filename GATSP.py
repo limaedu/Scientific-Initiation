@@ -8,21 +8,24 @@ tamanhoPop = 8
 
 
 
-class Cidade:
-    def __init__(self,nome,lat,long):
-        self.lat = lat #Latitude da cidade 
-        self.long = long #Longitude da cidade
-        self.nome = nome
+
+class Cidade(self,numero,lat,long):
+    self.numero = numero
+    self.lat = lat
+    self.long = long
     
-    '''def distancia(self,cidade):
+    def __repr__(self):
+        return self.numero
+
+def distancia(self,cidade):
         distX = abs(self.x - cidade.x)
         distY = abs(self.y - cidade.y)
         distancia = np.sqrt(distX**2 + distY**2)
         return distancia
-        '''    
+           
 
-    def __repr__(self):
-        return   "Nome: {}  ".format(self.nome)
+def __repr__(self):
+        return   self.numero
     
 
 def GerarCromossomo(ListaDeCidades):
@@ -116,7 +119,7 @@ def Roleta(populacao):
             intervalo[ranked[i][0]] = (soma, soma +ranked[i][1])
             soma += ranked[i][1]
             
-    return intervalo #Dicionário do tipo {'Roleta x': (intervalo fitness) }
+    return intervalo #Dicionário do tipo {'Rota x': (intervalo fitness) }
     
 
 
@@ -140,8 +143,6 @@ def CrossoverOrdenado(parent1,parent2):
     filho1 = np.zeros((1,6), dtype=np.float64)
     filho2 = np.zeros((1,6), dtype = np.float64)
     
-    parent1 = [1,2,3,4,5,6]
-    parent2 = [7,6,1,2,3,4]
     
     while True:
       gene1 = int(random.random()*len(parent1))
@@ -157,7 +158,7 @@ def CrossoverOrdenado(parent1,parent2):
     for i in range(inicio,fim):
       print (i)
       filho1[0][i] = parent1[i]
-    
+      filho2[0][i] = parent2[i]
     
     
     for i in range(-(len(parent2)-fim),fim):
@@ -166,7 +167,9 @@ def CrossoverOrdenado(parent1,parent2):
         if filho1[0][i] == 0 and parent2[i] not in filho1:
           if filho1[0][j] == 0:
             filho1[0][j] = parent2[i]
-    
+        if filho2[0][i] == 0 and parent1[i] not in filho2:
+          if filho2[0][j] == 0:
+            filho2[0][j] = parent1[i]
     
     
     print (filho1)
@@ -176,33 +179,34 @@ def CrossoverOrdenado(parent1,parent2):
         if filho1[0][i] == 0 and filho1[0][i] not in parent2:
           if parent2[j] not in filho1:
             filho1[0][i] = parent2[j]
-            
+        if filho2[0][i] == 0 and filho2[0][i] not in parent1:
+          if parent1[j] not in filho2:
+              filho2[0][i] = parent1[j]
     
-    print (filho1)
+    return (filho1,filho2)
 
 
 
 
-    
-        
+         
 
-C1 = Cidade("RJ",-22.908892,-43.177138)
-C2 = Cidade("SP",-23.550483,-46.633106)
-C3 = Cidade("RS",-30.033914,-51.229154)
-C4 = Cidade("ES",-20.319933,-40.336296)
-C5 = Cidade("PA",-7.120034,-34.876211)
-C6 = Cidade("PR",-25.433171,-49.27147)
-C7 = Cidade("SC",-27.593237,-48.543736)
+C1 = Cidade("1",-22.908892,-43.177138)
+C2 = Cidade("2",-23.550483,-46.633106)
+C3 = Cidade("3",-30.033914,-51.229154)
+C4 = Cidade("4",-20.319933,-40.336296)
+C5 = Cidade("5",-7.120034,-34.876211)
+C6 = Cidade("6",-25.433171,-49.27147)
+C7 = Cidade("7",-27.593237,-48.543736)
 Lista = [C1,C2,C3,C4,C5,C6,C7]
 I1 = GerarCromossomo(Lista)
 
-
+print (I1)
 
 
 
 P1 = (GerarPopInicial(tamanhoPop,Lista))
 
-#print (FitnessPercent(P1))
+print (FitnessPercent(P1))
 print (Roleta(P1))
 print (Selecao(P1))
-
+#print (CrossoverOrdenado(I1,I1))
